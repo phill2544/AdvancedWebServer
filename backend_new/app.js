@@ -25,13 +25,23 @@ conn.getConnection((err)=>{
     }
 })
 
-  app.get('/UpdateStatus/:status',async (req,res)=>{
-    lol = req.params.status
-    console.log(req.params);
-    console.log(lol);
-    conn.query(`UPDATE iot SET status = ? WHERE id = 1 `,[req.params.status],(err,result)=>{
+// update status
+  app.post('/UpdateStatuss',async (req,res)=>{
+    conn.query(`UPDATE iot SET status = ? WHERE id = 1 `,[req.body.status],(err,result)=>{
         if(err) throw err ;
         res.send('UPdate Success')
+    })
+})
+
+//fetch status
+app.get('/getLedStatus', (req,res)=>{
+    conn.query('SELECT * FROM iot WHERE id = 1',(err,result)=>{
+        if(err) throw err;
+        res.send({
+            status:true,
+            msg:'success',
+            ledStatus: result
+        })
     })
 })
 
